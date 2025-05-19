@@ -134,3 +134,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Auth Path
+auth
+
+# Test File Or Folder
+test.*
+test

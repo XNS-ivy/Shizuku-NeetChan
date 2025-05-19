@@ -1,0 +1,25 @@
+{
+  "name": "shizuku-neetchan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XNS-ivy/Shizuku-NeetChan.git"
+  },
+  "author": "XNS-ivy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/XNS-ivy/Shizuku-NeetChan/issues"
+  },
+  "homepage": "https://github.com/XNS-ivy/Shizuku-NeetChan#readme",
+  "dependencies": {
+    "baileys": "^6.7.17",
+    "pino": "^9.7.0",
+    "qrcode": "^1.5.4"
+  }
+}
