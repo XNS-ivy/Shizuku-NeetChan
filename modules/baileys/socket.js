@@ -1,10 +1,13 @@
 import { makeWASocket, useMultiFileAuthState, DisconnectReason } from 'baileys'
 import p from 'pino'
 import QRCode from 'qrcode'
+import { fetchCommand, fetchMessage } from './fetchMessage.js'
+import { loadCommands } from '../menuLoader.js'
 
 export async function startSock() {
     const authDir = './auth/'
     const { state, saveCreds } = await useMultiFileAuthState(authDir)
+    const commands = await loadCommands();
 
     const sock = makeWASocket({
         auth: state,
@@ -26,14 +29,21 @@ export async function startSock() {
         }
     })
     sock.ev.on('creds.update', saveCreds)
-    sock.ev.on('messages.upsert', ({ type, messages }) => {
-        if (type == 'notify') {
-            for (const message of messages) {
-                
-            }
-        } else {
-            for(const message of messages){
-                
+    sock.ev.on('messages.upsert', async ({ type, messages }) => {
+        if (type !== 'notify') return
+
+        for (const message of messages) {
+            const command = await fetchMessage(message)
+            const parsed = await fetchCommand(command?.text)
+            if (!parsed) return
+
+            const { name, args } = parsed
+            if (commands.has(name)) {
+                const runCmd = commands.get(name)
+                const response = await runCmd.execute(args)
+                if (response?.text && !response?.url) {
+                    await sock.sendMessage(command.id, { text: response.text }, { quoted: command.raw, ephemeralExpiration: command.expiration })
+                }
             }
         }
     })
