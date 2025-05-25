@@ -24,7 +24,7 @@ export async function findAnimeMovie(title = 'Charlotte') {
     }
 }
 
-export async function recommendAnime(genre = 'romance', limit = 7) {
+export async function recommendAnime(genre = 'romance', limit = 5) {
     try {
         const animeList = await axios.get(`https://api.jikan.moe/v4/genres/anime`)
         const genreObj = animeList.data.data.find(g => {
@@ -42,6 +42,6 @@ export async function recommendAnime(genre = 'romance', limit = 7) {
         }))
         return result
     } catch (error) {
-        return 'Faield Getting Information'
+        return `Failed Getting Information: ${error.message}`
     }
 }
