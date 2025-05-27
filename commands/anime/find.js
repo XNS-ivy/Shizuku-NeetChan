@@ -12,7 +12,7 @@ export default {
             `*Type*:\t${payload.type}\n\n` +
             `+ =========================\n\n` +
             `*Synopsis*:\t${payload.synopsis}\n\n` +
-            `URL: ${payload.url}\n\n` +
+            `*URL*: ${payload.url}\n\n` +
             `+ =========================`
         if (payload.title) {
             return {

@@ -1,5 +1,10 @@
 import axios from 'axios'
 import { parseStringPromise } from 'xml2js'
+import { configDotenv } from 'dotenv'
+configDotenv()
+
+const GELBOORU_API = process.env.GELBOORU_API
+const GELBOORU_ID = process.env.GELBOORU_ID
 
 export async function getGelbooruImage(tag = 'waifu') {
   try {
@@ -9,7 +14,9 @@ export async function getGelbooruImage(tag = 'waifu') {
         s: 'post',
         q: 'index',
         limit: 20,
-        tags: tag
+        tags: tag,
+        api_key: GELBOORU_API,
+        user_id: GELBOORU_ID,
       },
       timeout: 7000
     })
