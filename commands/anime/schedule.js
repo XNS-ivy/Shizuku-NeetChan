@@ -1,19 +1,10 @@
-import { recommendAnime } from "../../modules/axios/jikanAPI.js"
+import getAnimeShedule from "../../modules/axios/jikanAPI.js"
 
 export default {
-    name: 'recoanime',
-    desc: 'Giving a recommendation anime list',
+    name: 'anischedule',
+    desc: 'Get anime schedule by day',
     execute: async ({ args }) => {
-        const limit = !isNaN(parseInt(args[1]))
-            ? parseInt(args[1]) > 5
-                ? 5
-                : parseInt(args[1]) < 1
-                    ? 1
-                    : parseInt(args[1])
-            : 3
-
-        const payload = await recommendAnime(args[0], limit)
-
+        const payload = await getAnimeShedule(args.join(''))
         const isArray = Array.isArray(payload)
         if (isArray) {
             const result = []

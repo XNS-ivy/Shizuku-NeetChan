@@ -45,3 +45,21 @@ export async function recommendAnime(genre = 'romance', limit = 5) {
         return `Failed Getting Information: ${error.message}`
     }
 }
+
+export default async function getAnimeShedule(day = 'monday') {
+    try {
+        const res = axios.get(`https://api.jikan.moe/v4/schedules/${day.toLowerCase()}`)
+        const list = (await res).data.data.slice(0,5)
+        const result = list.map(anime => ({
+            title: anime.title,
+            url: anime.url,
+            score: anime.score,
+            image: anime.images.jpg.image_url,
+        }))
+
+        return result
+    } catch (error) {
+        console.error("Error Fetching Anime Schedule:", error.message)
+        return 'Failed to fetch schedule. Please use an English day like "monday".'
+    }
+}
