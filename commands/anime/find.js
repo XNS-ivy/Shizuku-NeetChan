@@ -3,6 +3,7 @@ import { findAnimeMovie } from "../../modules/axios/jikanAPI.js"
 export default {
     name: "fanime",
     desc: 'finding anime movie',
+    premium: false,
     execute: async ({ args }) => {
         const payload = await findAnimeMovie(args.join(' '))
         const content = `+ =========================\n\n` +

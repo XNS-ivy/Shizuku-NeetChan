@@ -3,6 +3,7 @@ import getAnimeShedule from "../../modules/axios/jikanAPI.js"
 export default {
     name: 'anischedule',
     desc: 'Get anime schedule by day',
+    premium: false,
     execute: async ({ args }) => {
         const payload = await getAnimeShedule(args.join(''))
         const isArray = Array.isArray(payload)

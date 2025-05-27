@@ -3,6 +3,7 @@ import { recommendAnime } from "../../modules/axios/jikanAPI.js"
 export default {
     name: 'recoanime',
     desc: 'Giving a recommendation anime list',
+    premium: false,
     execute: async ({ args }) => {
         const limit = !isNaN(parseInt(args[1]))
             ? parseInt(args[1]) > 5
