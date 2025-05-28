@@ -3,6 +3,7 @@ import p from 'pino'
 import QRCode from 'qrcode'
 import { fetchCommand, fetchMessage } from './fetchMessage.js'
 import { loadCommands } from '../menuLoader.js'
+import { handleIncomingCommands } from '../../websocket/emitMessage.js'
 
 export async function startSock() {
     const authDir = './auth/'
@@ -39,6 +40,8 @@ export async function startSock() {
             const parsed = await fetchCommand(msg?.text)
             if (!parsed) return
 
+            handleIncomingCommands(msg)
+
             const { name, args } = parsed
             if (commands.has(name)) {
                 const runCmd = commands.get(name)
@@ -53,7 +56,7 @@ export async function startSock() {
                     }
                 } else {
                     if (response?.text && !response?.url) {
-                        await sock.sendMessage(msg.id, { text: response.text }, { quoted: msg.raw, ephemeralExpiration: msg.expiration })
+                        await sock.sendMessage(msg.id, { text: response.text, mentions: response?.mentions }, { quoted: msg.raw, ephemeralExpiration: msg.expiration })
                     } else if (response?.type === 'image') {
                         await sock.sendMessage(msg.id, { image: { url: response.url }, caption: response.text }, { quoted: msg.raw, ephemeralExpiration: msg.expiration })
                     }

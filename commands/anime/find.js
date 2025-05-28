@@ -19,7 +19,7 @@ export default {
             return {
                 text: content
             }
-        }else {
+        } else {
             return {
                 text: payload
             }
