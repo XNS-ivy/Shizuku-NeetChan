@@ -6,8 +6,9 @@ export async function fetchMessage(msg = {}) {
     const phoneNumber = msg?.key?.participant || msg?.key?.remoteJid
     const id = msg?.key?.remoteJid
     const name = msg?.pushName
+
     const msgKeys = Object.keys(msg.message || {})
-    const type = msgKeys.includes('senderKeyDistributionMessage') ? msgKeys[2] : msgKeys[0]
+    const type = msgKeys.find(key => key !== 'senderKeyDistributionMessage') || 'unknown'
 
     const {
         extendedTextMessage,
@@ -18,25 +19,23 @@ export async function fetchMessage(msg = {}) {
     } = msg?.message || {}
 
     const text = conversation
-        ? conversation
-        : extendedTextMessage
-            ? extendedTextMessage.text
-            : stickerMessage
-                ? `[Sticker]`
-                : videoMessage
-                    ? `[Video]`
-                    : imageMessage
-                        ? `[Image]`
-                        : null
+        || extendedTextMessage?.text
+        || (stickerMessage && '[Sticker]')
+        || videoMessage?.caption
+        || imageMessage?.caption
+        || null
+
+    const getMediaUrl = (media = {}) => media?.url || null
 
     const expiration = msg?.message?.[type]?.contextInfo?.expiration || 0
-
+    
     return {
         id,
         phoneNumber,
         name,
         type,
         text,
+        mediaUrl: getMediaUrl(videoMessage) || getMediaUrl(imageMessage),
         expiration,
         raw: msg,
     }
@@ -45,8 +44,7 @@ export async function fetchMessage(msg = {}) {
 export async function fetchCommand(text = '') {
     if (!text) return
     const loadPrefix = await loadConfig()
-    const prefix = text.startsWith(loadPrefix.prefix)
-    if (prefix) {
+    if (text.startsWith(loadPrefix.prefix)) {
         const CommandBody = text.slice(loadPrefix.prefix.length).trim()
         const [name, ...args] = CommandBody.split(/\s+/)
         return {

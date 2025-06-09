@@ -30,6 +30,7 @@
     "pino": "^9.7.0",
     "qrcode": "^1.5.4",
     "socket.io": "^4.8.1",
+    "wa-sticker-formatter": "^4.4.4",
     "xml2js": "^0.6.2"
   }
 }

@@ -12,7 +12,7 @@ export async function startSock() {
 
     const sock = makeWASocket({
         auth: state,
-        logger: p({ level: 'silent' }),
+        logger: p({ level: 'fatal' }),
         browser: ["Shizuku", "1.0.0", "Chrome"],
         emitOwnEvents: false,
         syncFullHistory: false,
@@ -55,13 +55,24 @@ export async function startSock() {
                         }
                     }
                 } else {
-                    if (response?.text && !response?.url) {
+                    if (response?.text && !response?.url && response?.type != 'mod') {
                         await sock.sendMessage(msg.id, { text: response.text, mentions: response?.mentions }, { quoted: msg.raw, ephemeralExpiration: msg.expiration })
                     } else if (response?.type === 'image') {
                         await sock.sendMessage(msg.id, { image: { url: response.url }, caption: response.text }, { quoted: msg.raw, ephemeralExpiration: msg.expiration })
+                    } else if (response?.type === 'sticker') {
+                        if (response.buffer) {
+                            await sock.sendMessage(msg.id, { sticker: response.buffer }, { quoted: msg.raw, ephemeralExpiration: msg.expiration })
+                        } else if (response.url) {
+                            await sock.sendMessage(msg.id, { sticker: { url: response.url } }, { quoted: msg.raw, ephemeralExpiration: msg.expiration })
+                        }
                     }
                 }
             }
         }
     })
+
+    sock.ev.on('group-participants.update', async (test) => {
+        console.log(test)
+    })
+
 }
