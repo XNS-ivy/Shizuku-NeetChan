@@ -28,7 +28,9 @@ export async function fetchMessage(msg = {}) {
     const getMediaUrl = (media = {}) => media?.url || null
 
     const expiration = msg?.message?.[type]?.contextInfo?.expiration || 0
-    
+
+    const quotedMessage = msg?.message?.[type]?.contextInfo?.quotedMessage || null
+
     return {
         id,
         phoneNumber,
@@ -37,6 +39,7 @@ export async function fetchMessage(msg = {}) {
         text,
         mediaUrl: getMediaUrl(videoMessage) || getMediaUrl(imageMessage),
         expiration,
+        quoted: quotedMessage ?? null,
         raw: msg,
     }
 }
