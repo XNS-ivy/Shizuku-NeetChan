@@ -1,4 +1,4 @@
-import { makeWASocket, useMultiFileAuthState, DisconnectReason } from 'baileys'
+import { makeWASocket, useMultiFileAuthState, DisconnectReason, Browsers } from 'baileys'
 import p from 'pino'
 import { fetchCommand, fetchMessage } from './fetchMessage.js'
 import { loadCommands } from '../menuLoader.js'
@@ -13,7 +13,7 @@ export async function startSock() {
     const sock = makeWASocket({
         auth: state,
         logger: p({ level: 'fatal' }),
-        browser: ["Shizuku", "1.0.0", "Chrome"],
+        browser: Browsers.macOS('Google Chrome'),
         emitOwnEvents: false,
         syncFullHistory: false,
         generateHighQualityLinkPreview: true,
