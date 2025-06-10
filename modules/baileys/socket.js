@@ -8,7 +8,7 @@ import { renderCompactQR } from '../qrcode/socketConnect.js'
 export async function startSock() {
     const authDir = './auth/'
     const { state, saveCreds } = await useMultiFileAuthState(authDir)
-    const commands = await loadCommands();
+    const commands = await loadCommands()
 
     const sock = makeWASocket({
         auth: state,
