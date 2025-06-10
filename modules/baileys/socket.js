@@ -1,9 +1,9 @@
 import { makeWASocket, useMultiFileAuthState, DisconnectReason } from 'baileys'
 import p from 'pino'
-import QRCode from 'qrcode'
 import { fetchCommand, fetchMessage } from './fetchMessage.js'
 import { loadCommands } from '../menuLoader.js'
 import { handleIncomingCommands } from '../../websocket/emitMessage.js'
+import { renderCompactQR } from '../qrcode/socketConnect.js'
 
 export async function startSock() {
     const authDir = './auth/'
@@ -21,7 +21,7 @@ export async function startSock() {
     sock.ev.on('connection.update', async (update) => {
         const { connection, lastDisconnect, qr } = update
         if (qr) {
-            console.log(await QRCode.toString(qr, { type: 'terminal', small: true }))
+            await renderCompactQR(qr)
         }
         if (connection === 'close') {
             const shouldRestart = (lastDisconnect?.error)?.output?.statusCode === DisconnectReason.restartRequired
