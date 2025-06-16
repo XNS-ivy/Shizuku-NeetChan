@@ -27,6 +27,7 @@
     "http-proxy-agent": "^7.0.2",
     "jimp": "^0.16.13",
     "link-preview-js": "^3.0.15",
+    "mongoose": "^8.15.2",
     "pino": "^9.7.0",
     "qrcode": "^1.5.4",
     "socket.io": "^4.8.1",
